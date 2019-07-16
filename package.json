@@ -1,7 +1,7 @@
 {
-  "name": "steem-uri",
+  "name": "smoke-uri",
   "version": "0.1.0",
-  "description": "Steem URI parser and encoder",
+  "description": "Smoke URI parser and encoder",
   "license": "MIT",
   "main": "./lib/index",
   "typings": "./lib/index",
@@ -13,7 +13,7 @@
   ],
   "devDependencies": {
     "@types/node": "^10.0.9",
-    "dsteem": "^0.8.7",
+    "@smokenetwork/smoke-js": "^0.8.7",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3"
   }
