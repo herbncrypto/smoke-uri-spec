@@ -1,10 +1,10 @@
 /**
- * Steem URI Signing Protocol
- * @author Johan Nordberg <johan@steemit.com>
+ * Smoke URI Signing Protocol
+ *
  */
 
 // Only used for typings, no code is pulled in.
-import {Operation, Transaction} from 'dsteem'
+import {Operation, Transaction} from 'dsmoke'
 
 // Assumes node.js if any of the utils needed are missing.
 if (typeof URL === 'undefined') {
@@ -63,15 +63,15 @@ export interface DecodeResult {
 }
 
 /**
- * Parse a steem:// protocol link.
- * @param steemUrl The `steem:` url to parse.
+ * Parse a smoke:// protocol link.
+ * @param smokeUrl The `smoke:` url to parse.
  * @throws If the url can not be parsed.
  * @returns The resolved transaction and parameters.
  */
-export function decode(steemUrl: string): DecodeResult {
-    const url = new URL(steemUrl)
-    if (url.protocol !== 'steem:') {
-        throw new Error(`Invalid protocol, expected 'steem:' got '${ url.protocol }'`)
+export function decode(smokeUrl: string): DecodeResult {
+    const url = new URL(smokeUrl)
+    if (url.protocol !== 'smoke:') {
+        throw new Error(`Invalid protocol, expected 'smoke:' got '${ url.protocol }'`)
     }
     if (url.host !== 'sign') {
         throw new Error(`Invalid action, expected 'sign' got '${ url.host }'`)
