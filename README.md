@@ -1,8 +1,8 @@
 
-Steem URI protocol
+Smoke URI protocol
 ==================
 
-Protocol facilitating signing of steem transactions. Meant to be implemented by secure Steem wallet applications.
+Protocol facilitating signing of smoke transactions. Meant to be implemented by secure Smoke wallet applications.
 
 This repository contains both the specification and a zero dependency reference implementation that works in node.js and most browsers.
 
@@ -13,8 +13,8 @@ Installation
 Via npm or yarn:
 
 ```
-npm install steem-uri
-yarn add steem-uri
+npm install smoke-uri
+yarn add smoke-uri
 ```
 
 Manually: clone the repository and run `make`, this will place the built lib in `lib/index.js`.
@@ -26,28 +26,28 @@ Example usage
 Encoding operations:
 
 ```js
-const steemuri = require('steem-uri')
+const smokeuri = require('smoke-uri')
 
-steemuri.encodeOp(['vote', {voter: 'foo', author: 'bar', permlink: 'baz', weight: 10000}])
-// steem://sign/op/WyJ2b3RlIix7InZvdGVyIjoiZm9vIiwiYXV0aG9yIjoiYmFyIiwicGVybWxpbmsiOiJiYXoiLCJ3ZWlnaHQiOjEwMDAwfV0.
+smokeuri.encodeOp(['vote', {voter: 'foo', author: 'bar', permlink: 'baz', weight: 10000}])
+// smoke://sign/op/WyJ2b3RlIix7InZvdGVyIjoiZm9vIiwiYXV0aG9yIjoiYmFyIiwicGVybWxpbmsiOiJiYXoiLCJ3ZWlnaHQiOjEwMDAwfV0.
 
-steemuri.encodeOps([
+smokeuri.encodeOps([
     ['vote', {voter: 'foo', author: 'bar', permlink: 'baz', weight: 10000}],
     ['transfer', {from: 'foo', to: 'bar', amount: '10.000 STEEM', memo: 'baz'}]
 ], {callback: 'https://example.com/wallet?tx={{id}}'})
-// steem://sign/ops/W1sidm90ZSIseyJ2b3RlciI6ImZvbyIsImF1dGhvciI6ImJhciIsInBlcm1saW5rIjoiYmF6Iiwid2VpZ2h0IjoxMDAwMH1dLFsidHJhbnNmZXIiLHsiZnJvbSI6ImZvbyIsInRvIjoiYmFyIiwiYW1vdW50IjoiMTAuMDAwIFNURUVNIiwibWVtbyI6ImJheiJ9XV0.?cb=aHR0cHM6Ly9leGFtcGxlLmNvbS93YWxsZXQ_dHg9e3tpZH19
+// smoke://sign/ops/W1sidm90ZSIseyJ2b3RlciI6ImZvbyIsImF1dGhvciI6ImJhciIsInBlcm1saW5rIjoiYmF6Iiwid2VpZ2h0IjoxMDAwMH1dLFsidHJhbnNmZXIiLHsiZnJvbSI6ImZvbyIsInRvIjoiYmFyIiwiYW1vdW50IjoiMTAuMDAwIFNURUVNIiwibWVtbyI6ImJheiJ9XV0.?cb=aHR0cHM6Ly9leGFtcGxlLmNvbS93YWxsZXQ_dHg9e3tpZH19
 ```
 
-Decoding and resolving steem:// links (for wallet implementers):
+Decoding and resolving smoke:// links (for wallet implementers):
 
 ```js
-const steemuri = require('steem-uri')
+const smokeuri = require('smoke-uri')
 
-// parse the steem:// link
-const parsed = steemuri.decode(link)
+// parse the smoke:// link
+const parsed = smokeuri.decode(link)
 
 // resolve the decoded tx and params to a signable tx
-let {tx, signer} = steemuri.resolveTransaction(parsed.tx, parsed.params, {
+let {tx, signer} = smokeuri.resolveTransaction(parsed.tx, parsed.params, {
     // e.g. from a get_dynamic_global_properties call
     ref_block_num: 1234,
     ref_block_prefix: 5678900,
@@ -68,7 +68,7 @@ if (!parsed.params.no_broadcast) {
 
 // redirect to the callback if set
 if (parsed.params.callback) {
-    let url = steemuri.resolveCallback(parsed.params.callback, {
+    let url = smokeuri.resolveCallback(parsed.params.callback, {
         sig: signature,
         id: confirmation.id,
         block: confirmation.block_num,
@@ -83,19 +83,19 @@ if (parsed.params.callback) {
 Specification
 =============
 
-A protocol that allows Steem transactions and operations to be encoded into links that can be shared across applications and devices to sign transactions without implementers having to reveal their private key.
+A protocol that allows Smoke transactions and operations to be encoded into links that can be shared across applications and devices to sign transactions without implementers having to reveal their private key.
 
 
 Actions
 -------
 
-  * `steem://sign/tx/<base64u(JSON-encoded tx)>`
+  * `smoke://sign/tx/<base64u(JSON-encoded tx)>`
     Sign an arbitrary transaction.
-  * `steem://sign/op/<base64u(JSON-encoded op)>`
+  * `smoke://sign/op/<base64u(JSON-encoded op)>`
     As above but constructs a transaction around the operation before signing.
-  * `steem://sign/ops/<base64u(JSON-encoded op array)>`
+  * `smoke://sign/ops/<base64u(JSON-encoded op array)>`
     As above but allows multiple operations as an array.
-  * `steem://sign/<operation_name>[/operation_params..]`
+  * `smoke://sign/<operation_name>[/operation_params..]`
     Action aliases, see the "Specialized actions" section for more info.
 
 To facilitate re-usable signing URIs the implementation allows for a set of placeholder variables that can be used in a signing payload.
@@ -169,12 +169,12 @@ To keep the length of the URIs short, and the QR code size manageable, some comm
 
 ### Transfer tokens
 
-Action: `steem://sign/transfer/<username>/<amount>[/memo]`
+Action: `smoke://sign/transfer/<username>/<amount>[/memo]`
 
 Params:
 
   * `username` - User that should be followed by `__signer`
-  * `amount` - Amount to transfer, e.g. `1.000 STEEM`
+  * `amount` - Amount to transfer, e.g. `1.000 SMOKE`
   * `memo` - Base64u encoded memo, optional.
 
 Operation:
@@ -190,7 +190,7 @@ Operation:
 
 ### Follow user
 
-Action: `steem://sign/follow/<username>`
+Action: `smoke://sign/follow/<username>`
 
 Params:
 
@@ -229,9 +229,9 @@ Transaction:
     ["limit_order_create2", {
       "owner": "foo",
       "orderid": 1,
-      "amount_to_sell": "10.000 STEEM",
+      "amount_to_sell": "10.000 SMOKE",
       "fill_or_kill": false,
-      "exchange_rate": {"base": "1.000 STEEM", "quote": "0.420 SBD"},
+      "exchange_rate": {"base": "1.000 SMOKE", "quote": "0.240 BTS"},
       "expiration": "2018-05-30T00:00:00"
     }]
   ]
@@ -243,26 +243,26 @@ Parameters:
 ```json
 {
   "signer": "foo",
-  "callback": "https://steem.trader/sign_callback?id={{id}}"
+  "callback": "https://smoke.trader/sign_callback?id={{id}}"
 }
 ```
 
 Encoded:
 
 ```
-steem://sign/tx/eyJyZWZfYmxvY2tfbnVtIjo0ODg3MiwicmVmX2Jsb2NrX3ByZWZpeCI6MTU0Mzg1ODUxOSwiZXhwaXJhdGlvbiI6IjIwMTgtMDUtMjlUMTM6MTc6MzkiLCJleHRlbnNpb25zIjpbXSwib3BlcmF0aW9ucyI6W1sibGltaXRfb3JkZXJfY3JlYXRlMiIseyJvd25lciI6ImZvbyIsIm9yZGVyaWQiOjEsImFtb3VudF90b19zZWxsIjoiMTAuMDAwIFNURUVNIiwiZmlsbF9vcl9raWxsIjpmYWxzZSwiZXhjaGFuZ2VfcmF0ZSI6eyJiYXNlIjoiMS4wMDAgU1RFRU0iLCJxdW90ZSI6IjAuNDIwIFNCRCJ9LCJleHBpcmF0aW9uIjoiMjAxOC0wNS0zMFQwMDowMDowMCJ9XV19?s=foo&cb=aHR0cHM6Ly9zdGVlbS50cmFkZXIvc2lnbl9jYWxsYmFjaz9pZD17e2lkfX0.
+smoke://sign/tx/eyJyZWZfYmxvY2tfbnVtIjo0ODg3MiwicmVmX2Jsb2NrX3ByZWZpeCI6MTU0Mzg1ODUxOSwiZXhwaXJhdGlvbiI6IjIwMTgtMDUtMjlUMTM6MTc6MzkiLCJleHRlbnNpb25zIjpbXSwib3BlcmF0aW9ucyI6W1sibGltaXRfb3JkZXJfY3JlYXRlMiIseyJvd25lciI6ImZvbyIsIm9yZGVyaWQiOjEsImFtb3VudF90b19zZWxsIjoiMTAuMDAwIFNURUVNIiwiZmlsbF9vcl9raWxsIjpmYWxzZSwiZXhjaGFuZ2VfcmF0ZSI6eyJiYXNlIjoiMS4wMDAgU1RFRU0iLCJxdW90ZSI6IjAuNDIwIFNCRCJ9LCJleHBpcmF0aW9uIjoiMjAxOC0wNS0zMFQwMDowMDowMCJ9XV19?s=foo&cb=aHR0cHM6Ly9zdGVlbS50cmFkZXIvc2lnbl9jYWxsYmFjaz9pZD17e2lkfX0.
 ```
 
 ### Witness vote
 
-Reusable witness vote URI, e.g. for a "Vote for me!" QR code t-shirt.
+Reusable witness vote URI, e.g. for a "Vote for my witness" QR code.
 
 Operation:
 
 ```json
 ["account_witness_vote", {
   "account": "__signer",
-  "witness": "jesta",
+  "witness": "herbncrypto",
   "approve": true
 }]
 ```
@@ -270,7 +270,7 @@ Operation:
 Encoded:
 
 ```
-steem://sign/op/WyJhY2NvdW50X3dpdG5lc3Nfdm90ZSIseyJhY2NvdW50IjoiX19zaWduZXIiLCJ3aXRuZXNzIjoiamVzdGEiLCJhcHByb3ZlIjp0cnVlfV0.
+smoke://sign/op/WyJhY2NvdW50X3dpdG5lc3Nfdm90ZSIseyJhY2NvdW50IjoiX19zaWduZXIiLCJ3aXRuZXNzIjoiamVzdGEiLCJhcHByb3ZlIjp0cnVlfV0.
 ```
 
 
@@ -280,14 +280,14 @@ To sign for an account setup with multiple authorities a central service can act
 
 In the following scenario the account `foo` is setup with an active authority that has three account auths belonging to `bob`, `alice` and `picard`, the weights are setup so that two of those three accounts needs to sign.
 
-`bob` wants to transfer `150.000 STEEM` from the `foo` account to himself so he submits an operation to the signing service:
+`bob` wants to transfer `150.000 SMOKE` from the `foo` account to himself so he submits an operation to the signing service:
 
 ```json
 ["transfer", {
   "from": "foo",
   "to": "bob",
-  "amount": "150.000 STEEM",
-  "memo": "Bob's boat needs plastic padding"
+  "amount": "150.000 SMOKE",
+  "memo": "Bob's pipe needs potent packing"
 }]
 ```
 
@@ -296,12 +296,12 @@ The service then generates a signing URI with that operation and the following o
 ```json
 {
   "no_broadcast": true,
-  "callback": "https://sign.steem.vc/collect?id=123&sig={{sig}}"
+  "callback": "https://sign.smoke.vc/collect?id=123&sig={{sig}}"
 }
 ```
 
 ```
-steem://sign/op/WyJ0cmFuc2ZlciIseyJmcm9tIjoiZm9vIiwidG8iOiJib2IiLCJhbW91bnQiOiIxNTAuMDAwIFNURUVNIiwibWVtbyI6IkJvYidzIGJvYXQgbmVlZHMgcGxhc3RpYyBwYWRkaW5nIn1d?nb=&cb=aHR0cHM6Ly9zaWduLnN0ZWVtLnZjL2NvbGxlY3Q_aWQ9MTIzJnNpZz17e3NpZ319
+smoke://sign/op/WyJ0cmFuc2ZlciIseyJmcm9tIjoiZm9vIiwidG8iOiJib2IiLCJhbW91bnQiOiIxNTAuMDAwIFNURUVNIiwibWVtbyI6IkJvYidzIGJvYXQgbmVlZHMgcGxhc3RpYyBwYWRkaW5nIn1d?nb=&cb=aHR0cHM6Ly9zaWduLnN0ZWVtLnZjL2NvbGxlY3Q_aWQ9MTIzJnNpZz17e3NpZ319
 ```
 
 `bob` then signs the transaction using the URI, the service callback is pinged and the service now has his signature. Then he sends the URI to `alice` and `picard` and when one of them signs it the service has enough signatures it broadcasts the transaction.
