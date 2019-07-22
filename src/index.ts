@@ -241,17 +241,17 @@ function encodeJson(data: any) {
     return b64uEnc(JSON.stringify(data, null, 0))
 }
 
-/** Encodes a Steem transaction to a steem: URI. */
+/** Encodes a Smoke transaction to a smoke: URI. */
 export function encodeTx(tx: Transaction, params: Parameters = {}) {
     return `steem://sign/tx/${ encodeJson(tx) }${ encodeParameters(params) }`
 }
 
-/** Encodes a Steem operation to a steem: URI. */
+/** Encodes a Smoke operation to a smoke: URI. */
 export function encodeOp(op: Operation, params: Parameters = {}) {
     return `steem://sign/op/${ encodeJson(op) }${ encodeParameters(params) }`
 }
 
-/** Encodes several Steem operations to a steem: URI. */
+/** Encodes several Smoke operations to a smoke: URI. */
 export function encodeOps(ops: Operation, params: Parameters = {}) {
     return `steem://sign/ops/${ encodeJson(ops) }${ encodeParameters(params) }`
 }
