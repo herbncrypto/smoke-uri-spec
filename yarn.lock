@@ -188,9 +188,9 @@ drbg.js@^1.0.1:
     create-hash "^1.1.2"
     create-hmac "^1.1.4"
 
-dsteem@^0.8.7:
+dsmoke@^0.8.7:
   version "0.8.7"
-  resolved "https://registry.yarnpkg.com/dsteem/-/dsteem-0.8.7.tgz#71160fd3dc70b404bb24c17b88cfaef6676c5c7e"
+  resolved "https://registry.yarnpkg.com/dsmoke/-/dsmoke-0.8.7.tgz#71160fd3dc70b404bb24c17b88cfaef6676c5c7e"
   dependencies:
     bs58 "^4.0.1"
     bytebuffer "^5.0.1"
