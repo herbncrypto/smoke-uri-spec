@@ -243,15 +243,15 @@ function encodeJson(data: any) {
 
 /** Encodes a Smoke transaction to a smoke: URI. */
 export function encodeTx(tx: Transaction, params: Parameters = {}) {
-    return `steem://sign/tx/${ encodeJson(tx) }${ encodeParameters(params) }`
+    return `smoke://sign/tx/${ encodeJson(tx) }${ encodeParameters(params) }`
 }
 
 /** Encodes a Smoke operation to a smoke: URI. */
 export function encodeOp(op: Operation, params: Parameters = {}) {
-    return `steem://sign/op/${ encodeJson(op) }${ encodeParameters(params) }`
+    return `smoke://sign/op/${ encodeJson(op) }${ encodeParameters(params) }`
 }
 
 /** Encodes several Smoke operations to a smoke: URI. */
 export function encodeOps(ops: Operation, params: Parameters = {}) {
-    return `steem://sign/ops/${ encodeJson(ops) }${ encodeParameters(params) }`
+    return `smoke://sign/ops/${ encodeJson(ops) }${ encodeParameters(params) }`
 }
